@@ -1,0 +1,639 @@
+.page {
+  --peach: #f8e2cb;
+  --orange: #e9a353;
+  --ink: #1d1d1d;
+  --body: #545454;
+  min-width: 320px;
+  overflow-x: hidden;
+  background: #ffffff;
+  color: var(--ink);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.page *,
+.page *::before,
+.page *::after {
+  box-sizing: border-box;
+}
+
+.hero {
+  height: 687px;
+  background: linear-gradient(
+    to bottom,
+    var(--peach) 0,
+    var(--peach) 440px,
+    var(--ink) 440px,
+    var(--ink) 100%
+  );
+}
+
+.heroInner {
+  position: relative;
+  width: min(1168px, calc(100% - 48px));
+  height: 100%;
+  margin: 0 auto;
+}
+
+.heroCopy {
+  position: absolute;
+  top: 45px;
+  left: 0;
+  z-index: 2;
+  width: 470px;
+}
+
+.logo {
+  display: block;
+  width: 210px;
+  height: 100px;
+  object-fit: cover;
+}
+
+.heroCopy h1 {
+  margin: 29px 0 24px;
+  color: #111111;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 31px;
+  font-weight: 400;
+  line-height: 1.24;
+  letter-spacing: -0.7px;
+}
+
+.heroCopy p {
+  width: 440px;
+  margin: 0;
+  color: #5d5148;
+  font-size: 17px;
+  font-weight: 400;
+  line-height: 1.16;
+}
+
+.heroPersonFrame {
+  position: absolute;
+  z-index: 1;
+  top: 15px;
+  left: 510px;
+  width: 310px;
+  height: 426px;
+  overflow: hidden;
+}
+
+.heroPersonFrame::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 36%;
+  width: 9%;
+  height: 13%;
+  background: var(--peach);
+  pointer-events: none;
+}
+
+.heroPerson {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.formCard {
+  position: absolute;
+  z-index: 3;
+  top: 19px;
+  right: 0;
+  width: 355px;
+  min-height: 668px;
+  padding: 19px 19px 13px;
+  background: var(--orange);
+  color: #49351e;
+  font-size: 11px;
+}
+
+.fieldGroup {
+  margin-bottom: 17px;
+}
+
+.fieldGroup label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.fieldGroup input,
+.fieldGroup select {
+  display: block;
+  width: 100%;
+  height: 37px;
+  border: 0;
+  border-radius: 0;
+  outline: 0;
+  background: #ffffff;
+  color: #3b3b3b;
+  font: inherit;
+  font-size: 13px;
+  padding: 0 11px;
+}
+
+.fieldGroup input:focus,
+.fieldGroup select:focus {
+  box-shadow: inset 0 0 0 2px rgba(29, 29, 29, 0.35);
+}
+
+.phoneField {
+  display: flex;
+  width: 100%;
+  height: 37px;
+  background: #ffffff;
+}
+
+.phoneField button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  width: 83px;
+  height: 37px;
+  padding: 0 8px;
+  border: 0;
+  border-right: 1px solid #dedede;
+  background: #ffffff;
+  color: #333333;
+  font-size: 11px;
+  cursor: pointer;
+}
+
+.phoneField input {
+  flex: 1;
+  min-width: 0;
+}
+
+.chevron {
+  transform: translateY(-1px);
+  color: #777777;
+}
+
+.fieldGroup select {
+  width: 158px;
+  color: #777777;
+  appearance: auto;
+}
+
+.consentRow {
+  display: grid;
+  grid-template-columns: 12px 1fr;
+  gap: 10px;
+  align-items: start;
+  margin: 12px 0 20px;
+  color: #5c4228;
+  font-size: 10.7px;
+  line-height: 1.43;
+}
+
+.consentRow input {
+  width: 11px;
+  height: 11px;
+  margin: 2px 0 0;
+  accent-color: #ffffff;
+}
+
+.consentRow a {
+  color: #d1741e;
+  text-decoration: none;
+}
+
+.startButton {
+  display: block;
+  min-width: 120px;
+  height: 42px;
+  margin: 44px auto 0;
+  padding: 0 22px;
+  border: 0;
+  border-radius: 24px;
+  background: var(--ink);
+  color: #ffffff;
+  font-size: 15px;
+  cursor: pointer;
+  transition: transform 160ms ease, opacity 160ms ease;
+}
+
+.startButton:hover {
+  transform: translateY(-1px);
+  opacity: 0.92;
+}
+
+.heroSteps {
+  position: absolute;
+  z-index: 2;
+  top: 440px;
+  bottom: 0;
+  left: 0;
+  right: 380px;
+  display: grid;
+  align-items: center;
+  color: #ffffff;
+}
+
+.heroSteps ol {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 28px;
+  margin: 0;
+  padding: 12px 0 0;
+  list-style: none;
+}
+
+.heroSteps li {
+  min-width: 0;
+  text-align: center;
+}
+
+.heroSteps span {
+  display: block;
+  margin-bottom: 17px;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 58px;
+  font-weight: 400;
+  line-height: 1;
+}
+
+.heroSteps p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.24;
+}
+
+.contentSection {
+  position: relative;
+  min-height: 1173px;
+  padding-top: 57px;
+  background: #ffffff;
+  overflow: hidden;
+}
+
+.aboutGrid {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: 660px 430px;
+  column-gap: 48px;
+  width: min(1138px, calc(100% - 48px));
+  margin: 0 auto;
+}
+
+.aboutCopy h2 {
+  margin: 0 0 13px;
+  color: #2b2b2b;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 28px;
+  font-weight: 400;
+  line-height: 1.1;
+}
+
+.aboutCopy p {
+  margin: 0 0 12px;
+  color: var(--body);
+  font-size: 17px;
+  line-height: 1.16;
+}
+
+.myCareerSection {
+  margin-top: 39px;
+}
+
+.careerWheel {
+  display: block;
+  width: 430px;
+  height: 480px;
+  object-fit: cover;
+  transform: translateY(-7px);
+}
+
+.faqList {
+  position: relative;
+  z-index: 3;
+  width: min(760px, calc(100% - 48px));
+  margin: 63px auto 0;
+}
+
+.faqItem {
+  margin-bottom: 17px;
+}
+
+.faqItem > button {
+  width: 100%;
+  min-height: 52px;
+  padding: 0 17px;
+  border: 0;
+  border-radius: 8px;
+  background: var(--ink);
+  color: #ffffff;
+  text-align: left;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.faqAnswer {
+  display: grid;
+  grid-template-rows: 0fr;
+  overflow: hidden;
+  transition: grid-template-rows 220ms ease;
+}
+
+.faqAnswer p {
+  min-height: 0;
+  margin: 0;
+  padding: 0 18px;
+  color: #555555;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.faqAnswerOpen {
+  grid-template-rows: 1fr;
+}
+
+.faqAnswerOpen p {
+  padding-top: 13px;
+  padding-bottom: 4px;
+}
+
+.swoosh {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+  width: 260px;
+  height: 410px;
+  object-fit: cover;
+  pointer-events: none;
+}
+
+.footer {
+  min-height: 188px;
+  padding: 18px 24px 30px;
+  background: var(--ink);
+  color: #ffffff;
+  text-align: center;
+}
+
+.footerNav {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0;
+  margin-bottom: 22px;
+  font-size: 12px;
+  line-height: 1;
+}
+
+.footerNav span,
+.footerNav a {
+  position: relative;
+  padding: 0 24px;
+  color: #ffffff;
+  text-decoration: none;
+}
+
+.footerNav a::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 1px;
+  height: 13px;
+  background: rgba(255, 255, 255, 0.4);
+  transform: translateY(-50%);
+}
+
+.footerLegal {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 36px;
+  width: min(830px, 100%);
+  margin: 0 auto;
+}
+
+.footerLegal p {
+  margin: 0;
+  color: #ffffff;
+  font-size: 9.5px;
+  line-height: 1.25;
+}
+
+@media (max-width: 1120px) {
+  .heroInner {
+    width: min(960px, calc(100% - 32px));
+  }
+
+  .heroCopy {
+    width: 390px;
+  }
+
+  .heroCopy h1 {
+    font-size: 27px;
+  }
+
+  .heroCopy p {
+    width: 370px;
+    font-size: 15px;
+  }
+
+  .heroPersonFrame {
+    left: 390px;
+  }
+
+  .formCard {
+    width: 330px;
+  }
+
+  .heroSteps {
+    right: 350px;
+  }
+
+  .aboutGrid {
+    grid-template-columns: minmax(0, 1fr) 380px;
+    width: min(960px, calc(100% - 40px));
+    column-gap: 24px;
+  }
+
+  .careerWheel {
+    width: 380px;
+    height: auto;
+  }
+}
+
+@media (max-width: 860px) {
+  .hero {
+    height: auto;
+    background: var(--peach);
+  }
+
+  .heroInner {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: auto;
+  }
+
+  .heroCopy,
+  .heroPersonFrame,
+  .formCard,
+  .heroSteps {
+    position: relative;
+    inset: auto;
+  }
+
+  .heroCopy {
+    order: 1;
+    width: calc(100% - 40px);
+    margin: 0 auto;
+    padding-top: 26px;
+  }
+
+  .logo {
+    margin-left: -10px;
+  }
+
+  .heroCopy h1 {
+    margin-top: 18px;
+    font-size: clamp(28px, 7vw, 38px);
+  }
+
+  .heroCopy p {
+    width: 100%;
+    max-width: 560px;
+    font-size: 16px;
+    line-height: 1.35;
+  }
+
+  .heroPersonFrame {
+    order: 2;
+    align-self: center;
+    width: min(310px, 86vw);
+    height: auto;
+    aspect-ratio: 310 / 426;
+    margin-top: 18px;
+  }
+
+  .formCard {
+    order: 3;
+    width: 100%;
+    min-height: 0;
+    padding: 24px max(20px, calc((100% - 520px) / 2)) 28px;
+  }
+
+  .fieldGroup select {
+    width: 100%;
+  }
+
+  .startButton {
+    margin-top: 28px;
+  }
+
+  .heroSteps {
+    order: 4;
+    width: 100%;
+    padding: 48px 20px 52px;
+    background: var(--ink);
+  }
+
+  .heroSteps ol {
+    grid-template-columns: 1fr;
+    gap: 42px;
+    width: min(420px, 100%);
+    margin: 0 auto;
+    padding: 0;
+  }
+
+  .heroSteps span {
+    margin-bottom: 12px;
+  }
+
+  .heroSteps p {
+    font-size: 16px;
+  }
+
+  .contentSection {
+    min-height: 0;
+    padding: 48px 20px 170px;
+  }
+
+  .aboutGrid {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .aboutCopy p {
+    font-size: 16px;
+    line-height: 1.4;
+  }
+
+  .careerWheel {
+    width: min(430px, 100%);
+    height: auto;
+    margin: 28px auto 0;
+    transform: none;
+  }
+
+  .faqList {
+    width: 100%;
+    margin-top: 38px;
+  }
+
+  .swoosh {
+    width: 185px;
+    height: auto;
+  }
+
+  .footerNav {
+    gap: 14px 0;
+    line-height: 1.5;
+  }
+
+  .footerNav span,
+  .footerNav a {
+    padding: 0 12px;
+  }
+
+  .footerLegal {
+    grid-template-columns: 1fr;
+    gap: 13px;
+    max-width: 560px;
+  }
+}
+
+@media (max-width: 480px) {
+  .heroCopy {
+    width: calc(100% - 28px);
+  }
+
+  .heroCopy h1 br {
+    display: none;
+  }
+
+  .formCard {
+    padding-inline: 16px;
+  }
+
+  .contentSection {
+    padding-inline: 16px;
+  }
+
+  .aboutCopy h2 {
+    font-size: 25px;
+  }
+
+  .faqItem > button {
+    min-height: 50px;
+    font-size: 13px;
+  }
+
+  .footer {
+    padding-inline: 14px;
+  }
+
+  .footerNav a::before {
+    display: none;
+  }
+}
