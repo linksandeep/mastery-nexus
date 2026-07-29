@@ -80,6 +80,20 @@ function SearchIcon({ className }: IconProps) {
   );
 }
 
+function GlobeIcon({ className }: IconProps) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" aria-hidden="true">
+      <circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" strokeWidth="1.7" />
+      <path
+        d="M3.4 12h17.2M12 3c2.3 2.4 3.5 5.4 3.5 9S14.3 18.6 12 21c-2.3-2.4-3.5-5.4-3.5-9S9.7 5.4 12 3Z"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.5"
+      />
+    </svg>
+  );
+}
+
 function RefreshIcon({ className }: IconProps) {
   return (
     <svg className={className} viewBox="0 0 24 24" aria-hidden="true">
@@ -126,16 +140,16 @@ function DocumentIcon({ className }: IconProps) {
 
 function BrandLogo({ inverted = false }: { inverted?: boolean }) {
   return (
-    <a className={`brandLogo ${inverted ? "brandLogo--inverted" : ""}`} href="#top" aria-label="LearnifyOps home">
+    <a className={`brandLogo ${inverted ? "brandLogo--inverted" : ""}`} href="#top" aria-label="Learning People home">
       <svg className="brandLogo__mark" viewBox="0 0 64 64" aria-hidden="true">
         <circle cx="25" cy="26" r="15" fill="none" stroke="currentColor" strokeWidth="8" />
         <path d="M34 11v28c0 8 5 13 14 13" fill="none" stroke="currentColor" strokeLinecap="round" strokeWidth="8" />
       </svg>
       <span className="brandLogo__words">
-        <strong>learnify</strong>
-        <strong>ops</strong>
+        <strong>learning</strong>
+        <strong>people</strong>
       </span>
-      <small>EST. 2024</small>
+      <small>EST. 2010</small>
     </a>
   );
 }
@@ -181,21 +195,59 @@ function usePageScroll() {
 }
 
 function Header({ isScrolled, onEnquire }: { isScrolled: boolean; onEnquire: () => void }) {
+  const navItems = [
+    { label: "Courses", href: "#why-us", menu: true },
+    { label: "Support", href: "#footer", menu: true },
+    { label: "Student stories", href: "#student-stories", menu: true },
+    { label: "Career Insights", href: "#why-us", menu: true },
+    { label: "For Businesses", href: "#lower-enquiry", menu: false },
+    { label: "About", href: "#footer", menu: true },
+  ];
+
   return (
     <header className={`siteHeader ${isScrolled ? "siteHeader--scrolled" : ""}`}>
-      <div className="siteHeader__rail">
-        <BrandLogo />
-        <a className="headerTrust" href="#trustpilot" aria-label="Open Trustpilot section">
-          <span>★</span> Trustpilot
+      <BrandLogo />
+
+      <div className="siteHeader__utility">
+        <a className="careerQuizLink" href="/my-career-match">
+          Take Our Career Matching Quiz
         </a>
-        <a className="phoneButton" href="tel:+440000000000" aria-label="Call our team">
+        <a className="headerTrust" href="#trustpilot" aria-label="Open Trustpilot section">
+          Trustpilot
+        </a>
+        <button className="countrySelector" type="button" aria-label="Change country or region">
+          <GlobeIcon />
+          <span>UK</span>
+          <i aria-hidden="true" />
+        </button>
+        <a className="utilityPhoneLink" href="tel:+440000000000" aria-label="Call our team">
           <PhoneIcon />
         </a>
       </div>
-      <button className="headerCta" type="button" onClick={onEnquire}>
-        <ChatIcon />
-        <span>Enquire Now</span>
-      </button>
+
+      <div className="siteHeader__navRow">
+        <nav className="primaryNav" aria-label="Primary navigation">
+          {navItems.map((item) => (
+            <a href={item.href} key={item.label}>
+              <span>{item.label}</span>
+              {item.menu && <i aria-hidden="true" />}
+            </a>
+          ))}
+        </nav>
+
+        <button className="searchButton" type="button" aria-label="Search">
+          <SearchIcon />
+        </button>
+
+        <a className="compactPhoneButton" href="tel:+440000000000" aria-label="Call our team">
+          <PhoneIcon />
+        </a>
+
+        <button className="headerCta" type="button" onClick={onEnquire}>
+          <ChatIcon />
+          <span>Enquire Now</span>
+        </button>
+      </div>
     </header>
   );
 }
