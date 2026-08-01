@@ -140,16 +140,17 @@ function DocumentIcon({ className }: IconProps) {
 
 function BrandLogo({ inverted = false }: { inverted?: boolean }) {
   return (
-    <a className={`brandLogo ${inverted ? "brandLogo--inverted" : ""}`} href="#top" aria-label="Learning People home">
-      <svg className="brandLogo__mark" viewBox="0 0 64 64" aria-hidden="true">
-        <circle cx="25" cy="26" r="15" fill="none" stroke="currentColor" strokeWidth="8" />
-        <path d="M34 11v28c0 8 5 13 14 13" fill="none" stroke="currentColor" strokeLinecap="round" strokeWidth="8" />
-      </svg>
-      <span className="brandLogo__words">
-        <strong>learning</strong>
-        <strong>people</strong>
+    <a className={`brandLogo ${inverted ? "brandLogo--inverted" : ""}`} href="#top" aria-label="Mastery Nexus home">
+      <span className="brandLogo__mark" aria-hidden="true">
+        <span className="brandLogo__stem brandLogo__stem--left" />
+        <span className="brandLogo__stem brandLogo__stem--right" />
+        <span className="brandLogo__slash brandLogo__slash--top" />
+        <span className="brandLogo__slash brandLogo__slash--bottom" />
       </span>
-      <small>EST. 2010</small>
+      <span className="brandLogo__copy">
+        <strong>MASTERY</strong>
+        <span>NEXUS</span>
+      </span>
     </a>
   );
 }
@@ -196,48 +197,25 @@ function usePageScroll() {
 
 function Header({ isScrolled, onEnquire }: { isScrolled: boolean; onEnquire: () => void }) {
   const navItems = [
-    { label: "Courses", href: "#why-us", menu: true },
-    { label: "Support", href: "#footer", menu: true },
-    { label: "Student stories", href: "#student-stories", menu: true },
-    { label: "Career Insights", href: "#why-us", menu: true },
-    { label: "For Businesses", href: "#lower-enquiry", menu: false },
-    { label: "About", href: "#footer", menu: true },
+    { label: "Courses", href: "#top" },
+    { label: "Career Support", href: "#why-us" },
+    { label: "Student Stories", href: "#student-stories" },
+    { label: "Reviews", href: "#trustpilot" },
+    { label: "Contact", href: "#lower-enquiry" },
   ];
 
   return (
     <header className={`siteHeader ${isScrolled ? "siteHeader--scrolled" : ""}`}>
       <BrandLogo />
 
-      <div className="siteHeader__utility">
-        <a className="careerQuizLink" href="/my-career-match">
-          Take Our Career Matching Quiz
-        </a>
-        <a className="headerTrust" href="#trustpilot" aria-label="Open Trustpilot section">
-          Trustpilot
-        </a>
-        <button className="countrySelector" type="button" aria-label="Change country or region">
-          <GlobeIcon />
-          <span>UK</span>
-          <i aria-hidden="true" />
-        </button>
-        <a className="utilityPhoneLink" href="tel:+440000000000" aria-label="Call our team">
-          <PhoneIcon />
-        </a>
-      </div>
-
       <div className="siteHeader__navRow">
         <nav className="primaryNav" aria-label="Primary navigation">
           {navItems.map((item) => (
             <a href={item.href} key={item.label}>
               <span>{item.label}</span>
-              {item.menu && <i aria-hidden="true" />}
             </a>
           ))}
         </nav>
-
-        <button className="searchButton" type="button" aria-label="Search">
-          <SearchIcon />
-        </button>
 
         <a className="compactPhoneButton" href="tel:+440000000000" aria-label="Call our team">
           <PhoneIcon />
@@ -377,8 +355,29 @@ function EnquiryForm({ id, title, compact = false }: EnquiryFormProps) {
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const payload = Object.fromEntries(new FormData(event.currentTarget));
-    console.log(`Form ${id} submitted`, payload);
+    const form = event.currentTarget;
+    const payload = {
+      ...Object.fromEntries(new FormData(form)),
+      submittedAt: new Date().toISOString(),
+      formId: id,
+    };
+
+    if (typeof window !== "undefined") {
+      try {
+        const existing = window.localStorage.getItem("mastery-nexus-enquiries");
+        const parsed = existing ? JSON.parse(existing) : [];
+        const enquiries = Array.isArray(parsed) ? parsed : [];
+        window.localStorage.setItem("mastery-nexus-enquiries", JSON.stringify([...enquiries, payload].slice(-50)));
+      } catch {
+        try {
+          window.sessionStorage.setItem("mastery-nexus-last-enquiry", JSON.stringify(payload));
+        } catch {
+          // Keep the form usable even when browser storage is unavailable.
+        }
+      }
+    }
+
+    form.reset();
     setSubmitted(true);
   };
 
@@ -389,24 +388,16 @@ function EnquiryForm({ id, title, compact = false }: EnquiryFormProps) {
       </button>
 
       <div className="enquiryCard__intro">
-        <h2>{title ?? <>Become a certified Data Analyst with 97% employment success.</>}</h2>
-        <p>You must be 18+. Finance options available.</p>
+        <h2>{title ?? <>Become a certified Data Analyst with Mastery Nexus.</>}</h2>
+        <p>Flexible online learning with guided career support.</p>
       </div>
 
       <div className="formGrid">
         <label className="field">
-          <span>First Name *</span>
+          <span>Name *</span>
           <span className="inputShell">
             <UserIcon />
-            <input name="firstName" type="text" placeholder="First name" autoComplete="given-name" required />
-          </span>
-        </label>
-
-        <label className="field">
-          <span>Last Name *</span>
-          <span className="inputShell">
-            <UserIcon />
-            <input name="lastName" type="text" placeholder="Last name" autoComplete="family-name" required />
+            <input name="name" type="text" placeholder="Your name" autoComplete="name" required />
           </span>
         </label>
 
@@ -414,7 +405,21 @@ function EnquiryForm({ id, title, compact = false }: EnquiryFormProps) {
           <span>Email *</span>
           <span className="inputShell">
             <MailIcon />
-            <input name="email" type="email" placeholder="e.g., john.doe@example.com" autoComplete="email" required />
+            <input name="email" type="email" placeholder="you@example.com" autoComplete="email" required />
+          </span>
+        </label>
+
+        <label className="field">
+          <span>Course Interest *</span>
+          <span className="inputShell">
+            <DocumentIcon />
+            <select name="courseInterest" defaultValue="" required>
+              <option value="" disabled>Select course</option>
+              <option value="data-analytics">Data Analytics</option>
+              <option value="business-analytics">Business Analytics</option>
+              <option value="project-management">Project Management</option>
+              <option value="career-guidance">Not sure yet</option>
+            </select>
           </span>
         </label>
 
@@ -424,33 +429,16 @@ function EnquiryForm({ id, title, compact = false }: EnquiryFormProps) {
         </div>
       </div>
 
-      <fieldset className="businessField">
-        <legend>Is this a business enquiry? *</legend>
-        <label><input type="radio" name="businessEnquiry" value="yes" required /><span>Yes</span></label>
-        <label><input type="radio" name="businessEnquiry" value="no" required /><span>No</span></label>
-      </fieldset>
+      <label className="consentCheck">
+        <input name="privacyConsent" type="checkbox" required />
+        <span>I agree to be contacted by Mastery Nexus about my enquiry.</span>
+      </label>
 
-      <div className="legalChecks">
-        <label>
-          <input name="privacyConsent" type="checkbox" required />
-          <span>
-            By ticking this box I acknowledge that LearnifyOps will collect and process information relating to me in accordance with the company <a href="#footer">Privacy Policy</a> and agree to be contacted in relation to my enquiry.
-          </span>
-        </label>
-        <label>
-          <input name="marketingConsent" type="checkbox" />
-          <span>
-            I agree to receive promotional updates via digital and offline marketing channels. For further information please see our <a href="#footer">Privacy Policy</a>.
-          </span>
-        </label>
-      </div>
-
-      <button className="submitButton" type="submit">Submit</button>
-      <a className="privacyLink" href="#footer">Privacy Policy</a>
+      <button className="submitButton" type="submit">Submit Enquiry</button>
 
       {submitted && (
         <p className="successMessage" role="status">
-          Thank you. Your enquiry has been captured in the frontend demo.
+          Thank you. Your enquiry has been saved and our team can follow up.
         </p>
       )}
     </form>
@@ -458,10 +446,10 @@ function EnquiryForm({ id, title, compact = false }: EnquiryFormProps) {
 }
 
 const heroBenefits: ReactNode[] = [
-  <strong key="one">Enquire for our latest offers</strong>,
-  <strong key="two">97% employment success rate after completing our exclusive Career Services</strong>,
-  <span key="three">We&apos;ve helped place <strong>thousands of students</strong> at the biggest companies all over the world</span>,
-  <span key="four">Enquire today and we&apos;ll send you a <strong>free essential guide to careers in Data</strong></span>,
+  <strong key="one">Structured training for data, analytics, and business intelligence roles</strong>,
+  <strong key="two">Hands-on projects that help you build a practical portfolio</strong>,
+  <span key="three">Mentor-led learning designed for beginners and career switchers</span>,
+  <span key="four">Enquire today and get guidance on the right learning path for you</span>,
 ];
 
 const testimonials = [
@@ -510,32 +498,32 @@ const testimonials = [
 const featureCards = [
   {
     title: <>Earn an average salary of<br />£47,000+</>,
-    text: "Data Analysis is a lucrative industry. You may wish to work from home, contract, or seek full-time employment.",
+    text: "Data analysis opens routes into remote, contract, and full-time roles across modern businesses.",
     image: "https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=700&q=85",
   },
   {
     title: <>Gain globally recognised<br />industry certifications</>,
-    text: "Experience our accredited online career-ready education with expert support, practice and feedback.",
+    text: "Learn through career-ready online training with expert support, practice tasks, and feedback.",
     image: "https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=700&q=85",
   },
   {
     title: <>Career support and job<br />opportunities</>,
-    text: "Our three-phase career services process is designed to help learners secure interviews and move into new roles.",
+    text: "Mastery Nexus helps learners prepare for interviews, sharpen their CV, and move toward new roles.",
     image: "https://images.unsplash.com/photo-1568992687947-868a62a9f521?auto=format&fit=crop&w=700&q=85",
   },
 ];
 
 const whyItems = [
-  "97% employment success",
-  "Number one platform to change career, start or progress your career",
-  "Gain employment, faster",
-  "40,000+ students worldwide",
-  "Project management experts",
+  "Practical projects for your portfolio",
+  "Clear paths for career starters and switchers",
+  "Mentor guidance throughout your learning",
+  "Flexible online study",
+  "Data and project-management focused training",
   "Learn online 24/7",
-  "Career Services support to boost your employability",
-  "Award winning StudentCare™",
-  "Partnered with recognised accreditors",
-  "Full support throughout",
+  "Career support to boost your employability",
+  "Personal guidance from enquiry to completion",
+  "Industry-aligned skills and tools",
+  "Support that keeps your progress moving",
 ];
 
 function ScrollRibbon({ progress }: { progress: number }) {
@@ -659,10 +647,10 @@ function Footer() {
         <nav className="footerLinks" aria-label="Useful links">
           <strong>Useful Links</strong>
           <a href="#top">Data Analytics courses</a>
-          <a href="#why-us">Cyber Security courses</a>
-          <a href="#why-us">Coding courses</a>
-          <a href="#why-us">IT courses</a>
-          <a href="#why-us">Why Learn With Us</a>
+          <a href="#why-us">Career support</a>
+          <a href="#why-us">Online learning</a>
+          <a href="#why-us">Project-based training</a>
+          <a href="#why-us">Why Mastery Nexus</a>
           <a href="#student-stories">Student support</a>
           <a href="#footer">Contact information</a>
           <a href="#footer">Work with us</a>
@@ -712,7 +700,7 @@ export default function LandingPage() {
         <div className="hero__grid pageShell">
           <div className="heroCopy">
             <p className="heroCopy__eyebrow">Become a Data Analyst</p>
-            <h1 id="hero-title">Earn an average <span>salary of £47,000+</span></h1>
+            <h1 id="hero-title">Build your data career <span>with Mastery Nexus</span></h1>
             <ul className="heroBenefits">
               {heroBenefits.map((benefit, index) => (
                 <li key={index}><i aria-hidden="true" /><span>{benefit}</span></li>
@@ -783,7 +771,7 @@ export default function LandingPage() {
             <EnquiryForm
               id="lower-enquiry"
               compact
-              title={<>Become a certified professional in IT, Tech or Project Management with 97% employment success.</>}
+              title={<>Become a certified professional in data, tech, or project management with Mastery Nexus.</>}
             />
           </div>
         </div>
@@ -799,7 +787,7 @@ export default function LandingPage() {
             <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1200&q=85" alt="" />
             <div className="videoCard__overlay">
               <small>Student testimonials</small>
-              <strong>Secure your new career with LearnifyOps</strong>
+              <strong>Shape your next career move with Mastery Nexus</strong>
             </div>
             <PlayIcon />
           </button>

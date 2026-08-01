@@ -23,7 +23,7 @@ const faqs: Faq[] = [
   {
     question: "Where do I get career advice to discuss my results?",
     answer:
-      "After receiving your report, speak with a LearnifyOps career adviser to discuss the recommended pathways and your next steps.",
+      "After receiving your report, speak with a Mastery Nexus career adviser to discuss the recommended pathways and your next steps.",
   },
 ];
 
@@ -35,10 +35,33 @@ const steps = [
 
 export default function CareerMatchPage() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
+  const [submitted, setSubmitted] = useState(false);
   const formId = useId();
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    const form = event.currentTarget;
+    const payload = {
+      ...Object.fromEntries(new FormData(form)),
+      submittedAt: new Date().toISOString(),
+      formId: "career-match",
+    };
+
+    try {
+      const existing = window.localStorage.getItem("mastery-nexus-enquiries");
+      const parsed = existing ? JSON.parse(existing) : [];
+      const enquiries = Array.isArray(parsed) ? parsed : [];
+      window.localStorage.setItem("mastery-nexus-enquiries", JSON.stringify([...enquiries, payload].slice(-50)));
+    } catch {
+      try {
+        window.sessionStorage.setItem("mastery-nexus-last-enquiry", JSON.stringify(payload));
+      } catch {
+        // Keep the form usable even when browser storage is unavailable.
+      }
+    }
+
+    form.reset();
+    setSubmitted(true);
   }
 
   return (
@@ -46,14 +69,18 @@ export default function CareerMatchPage() {
       <section className={styles.hero}>
         <div className={styles.heroInner}>
           <div className={styles.heroCopy}>
-            <Image
-              src="/career-match/logo.png"
-              alt="Learning People"
-              width={210}
-              height={100}
-              className={styles.logo}
-              priority
-            />
+            <a className={styles.logo} href="/" aria-label="Mastery Nexus home">
+              <span className={styles.logoMark} aria-hidden="true">
+                <span className={styles.logoStemLeft} />
+                <span className={styles.logoStemRight} />
+                <span className={styles.logoSlashTop} />
+                <span className={styles.logoSlashBottom} />
+              </span>
+              <span className={styles.logoCopy}>
+                <strong>MASTERY</strong>
+                <span>NEXUS</span>
+              </span>
+            </a>
 
             <h1>
               Match your personality to a career
@@ -151,7 +178,7 @@ export default function CareerMatchPage() {
             <label className={styles.consentRow}>
               <input type="checkbox" required />
               <span>
-                By ticking this box I acknowledge that Learning People will
+                By ticking this box I acknowledge that Mastery Nexus will
                 collect and process information relating to me in accordance
                 with the company <a href="#privacy">Privacy Policy</a> and agree
                 to be contacted in relation to my enquiry (required). *
@@ -171,6 +198,12 @@ export default function CareerMatchPage() {
             <button type="submit" className={styles.startButton}>
               Start Now
             </button>
+
+            {submitted && (
+              <p className={styles.formSuccess} role="status">
+                Thank you. Your details have been saved.
+              </p>
+            )}
           </form>
 
           <div className={styles.heroSteps} aria-label="How the career match works">
@@ -269,7 +302,7 @@ export default function CareerMatchPage() {
 
       <footer className={styles.footer}>
         <nav className={styles.footerNav} aria-label="Footer links">
-          <span>© The Learning People 2023</span>
+          <span>© Mastery Nexus 2026</span>
           <a href="#faq">FAQ</a>
           <a href="#terms">Terms &amp; Conditions</a>
           <a id="privacy" href="#privacy">
@@ -280,18 +313,16 @@ export default function CareerMatchPage() {
 
         <div className={styles.footerLegal}>
           <p>
-            The Learning People Ltd is authorised and regulated by the Financial
-            Conduct Authority, register number 689955, and act as a credit broker
-            and not a lender.
+            This is a frontend demonstration. Replace this legal and regulatory
+            copy with Mastery Nexus approved wording before publishing.
           </p>
           <p>
-            Finance is provided through the Deco platform by Omni Capital Retail
-            Finance Limited.
+            Finance, accreditation, and company registration details can be added
+            here when they are confirmed.
           </p>
           <p>
-            Omni Capital Retail Finance Limited is authorised and regulated by
-            the Financial Conduct Authority (register number 720279). Learning
-            People company number: 07182042.
+            The privacy policy and terms links should point to the final approved
+            company documents.
           </p>
         </div>
       </footer>
