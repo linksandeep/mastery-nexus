@@ -57,59 +57,11 @@
 }
 
 .logoMark {
-  position: relative;
-  width: 48px;
-  height: 44px;
-  flex: 0 0 48px;
-}
-
-.logoStemLeft,
-.logoStemRight,
-.logoSlashTop,
-.logoSlashBottom {
-  position: absolute;
+  width: 54px;
+  height: 58px;
+  flex: 0 0 54px;
   display: block;
-  border-radius: 1px;
-}
-
-.logoStemLeft,
-.logoStemRight {
-  top: 3px;
-  width: 10px;
-  height: 38px;
-  background: var(--ink);
-}
-
-.logoStemLeft {
-  left: 8px;
-  transform: skewY(26deg);
-  transform-origin: top left;
-}
-
-.logoStemRight {
-  right: 9px;
-  transform: skewY(-26deg);
-  transform-origin: top right;
-}
-
-.logoSlashTop,
-.logoSlashBottom {
-  height: 9px;
-  background: var(--orange);
-  box-shadow: 0 1px 0 rgba(255,255,255,.42) inset;
-  transform: rotate(-31deg);
-}
-
-.logoSlashTop {
-  top: 7px;
-  right: 0;
-  width: 36px;
-}
-
-.logoSlashBottom {
-  left: 0;
-  bottom: 8px;
-  width: 44px;
+  object-fit: contain;
 }
 
 .logoCopy {

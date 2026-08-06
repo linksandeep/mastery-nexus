@@ -141,12 +141,7 @@ function DocumentIcon({ className }: IconProps) {
 function BrandLogo({ inverted = false }: { inverted?: boolean }) {
   return (
     <a className={`brandLogo ${inverted ? "brandLogo--inverted" : ""}`} href="#top" aria-label="Mastery Nexus home">
-      <span className="brandLogo__mark" aria-hidden="true">
-        <span className="brandLogo__stem brandLogo__stem--left" />
-        <span className="brandLogo__stem brandLogo__stem--right" />
-        <span className="brandLogo__slash brandLogo__slash--top" />
-        <span className="brandLogo__slash brandLogo__slash--bottom" />
-      </span>
+      <img className="brandLogo__mark" src="/brand/mastery-nexus-mark.png" alt="" aria-hidden="true" />
       <span className="brandLogo__copy">
         <strong>MASTERY</strong>
         <span>NEXUS</span>

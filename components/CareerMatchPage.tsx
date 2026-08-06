@@ -70,12 +70,7 @@ export default function CareerMatchPage() {
         <div className={styles.heroInner}>
           <div className={styles.heroCopy}>
             <a className={styles.logo} href="/" aria-label="Mastery Nexus home">
-              <span className={styles.logoMark} aria-hidden="true">
-                <span className={styles.logoStemLeft} />
-                <span className={styles.logoStemRight} />
-                <span className={styles.logoSlashTop} />
-                <span className={styles.logoSlashBottom} />
-              </span>
+              <img className={styles.logoMark} src="/brand/mastery-nexus-mark.png" alt="" aria-hidden="true" />
               <span className={styles.logoCopy}>
                 <strong>MASTERY</strong>
                 <span>NEXUS</span>

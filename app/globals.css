@@ -681,55 +681,18 @@ img { display: block; max-width: 100%; }
 .brandLogo {
   display: inline-flex;
   align-items: center;
-  gap: 12px;
+  gap: 13px;
   color: #181818;
   text-decoration: none;
-  min-width: 255px;
+  min-width: 250px;
   line-height: 1;
 }
 .brandLogo__mark {
-  position: relative;
-  width: 48px;
-  height: 44px;
-  flex: 0 0 48px;
-}
-.brandLogo__stem,
-.brandLogo__slash {
-  position: absolute;
+  width: 54px;
+  height: 58px;
+  flex: 0 0 54px;
   display: block;
-  border-radius: 1px;
-}
-.brandLogo__stem {
-  top: 3px;
-  width: 10px;
-  height: 38px;
-  background: var(--ink-deep);
-}
-.brandLogo__stem--left {
-  left: 8px;
-  transform: skewY(26deg);
-  transform-origin: top left;
-}
-.brandLogo__stem--right {
-  right: 9px;
-  transform: skewY(-26deg);
-  transform-origin: top right;
-}
-.brandLogo__slash {
-  height: 9px;
-  background: var(--orange);
-  box-shadow: 0 1px 0 rgba(255,255,255,.42) inset;
-  transform: rotate(-31deg);
-}
-.brandLogo__slash--top {
-  top: 7px;
-  right: 0;
-  width: 36px;
-}
-.brandLogo__slash--bottom {
-  left: 0;
-  bottom: 8px;
-  width: 44px;
+  object-fit: contain;
 }
 .brandLogo__copy {
   display: grid;
@@ -764,7 +727,6 @@ img { display: block; max-width: 100%; }
 .brandLogo__copy span::before { right: calc(100% + 7px); }
 .brandLogo__copy span::after { left: calc(100% + 7px); }
 .brandLogo--inverted .brandLogo__copy strong { color: #fff; }
-.brandLogo--inverted .brandLogo__stem { background: #fff; }
 .brandLogo--inverted { color: #fff; }
 .headerCta {
   height: 48px;
@@ -1338,11 +1300,7 @@ input:focus-visible, select:focus-visible, textarea:focus-visible, button:focus-
     column-gap: 18px;
   }
   .brandLogo { min-width: 235px; gap: 10px; }
-  .brandLogo__mark { width: 42px; height: 39px; flex-basis: 42px; }
-  .brandLogo__stem { height: 34px; width: 9px; }
-  .brandLogo__slash { height: 8px; }
-  .brandLogo__slash--top { width: 32px; }
-  .brandLogo__slash--bottom { width: 39px; }
+  .brandLogo__mark { width: 46px; height: 50px; flex-basis: 46px; }
   .brandLogo__copy strong { font-size: 21px; }
   .brandLogo__copy span { font-size: 10px; }
   .siteHeader__navRow {
@@ -1367,11 +1325,7 @@ input:focus-visible, select:focus-visible, textarea:focus-visible, button:focus-
     padding: 8px 10px;
   }
   .brandLogo { min-width: 235px; gap: 10px; }
-  .brandLogo__mark { width: 42px; height: 39px; flex-basis: 42px; }
-  .brandLogo__stem { height: 34px; width: 9px; }
-  .brandLogo__slash { height: 8px; }
-  .brandLogo__slash--top { width: 32px; }
-  .brandLogo__slash--bottom { width: 39px; }
+  .brandLogo__mark { width: 46px; height: 50px; flex-basis: 46px; }
   .brandLogo__copy strong { font-size: 21px; }
   .brandLogo__copy span { font-size: 10px; }
   .siteHeader > .brandLogo { grid-column: 1; grid-row: 1; }
@@ -1504,13 +1458,7 @@ input:focus-visible, select:focus-visible, textarea:focus-visible, button:focus-
   .siteHeader--scrolled::before { display: none; }
   .siteHeader__navRow { grid-template-columns: 42px 50px; gap: 7px; }
   .brandLogo { min-width: 156px; gap: 8px; }
-  .brandLogo__mark { width: 31px; height: 30px; flex-basis: 31px; }
-  .brandLogo__stem { top: 2px; width: 7px; height: 26px; }
-  .brandLogo__stem--left { left: 5px; }
-  .brandLogo__stem--right { right: 5px; }
-  .brandLogo__slash { height: 6px; }
-  .brandLogo__slash--top { top: 5px; width: 25px; }
-  .brandLogo__slash--bottom { bottom: 5px; width: 29px; }
+  .brandLogo__mark { width: 34px; height: 37px; flex-basis: 34px; }
   .brandLogo__copy { gap: 3px; }
   .brandLogo__copy strong { font-size: 15px; letter-spacing: .06em; }
   .brandLogo__copy span { font-size: 8px; letter-spacing: .28em; padding-left: .28em; }
