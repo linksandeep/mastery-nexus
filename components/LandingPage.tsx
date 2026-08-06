@@ -679,6 +679,48 @@ function Footer() {
 export default function LandingPage() {
   const { isScrolled, curveProgress } = usePageScroll();
 
+  useEffect(() => {
+    const getAnchorOffset = () => {
+      const rawOffset = getComputedStyle(document.documentElement).getPropertyValue("--anchor-offset");
+      return Number.parseFloat(rawOffset) || 110;
+    };
+
+    const scrollToHash = (hash: string, behavior: ScrollBehavior = "smooth") => {
+      const target = document.getElementById(hash.replace("#", ""));
+      if (!target) return;
+
+      const top = Math.max(0, target.getBoundingClientRect().top + window.scrollY - getAnchorOffset());
+      window.scrollTo({ top, behavior });
+    };
+
+    const handleAnchorClick = (event: MouseEvent) => {
+      const target = event.target;
+      if (!(target instanceof Element)) return;
+
+      const link = target.closest<HTMLAnchorElement>('a[href^="#"]');
+      const hash = link?.getAttribute("href");
+      if (!hash || hash === "#" || !document.getElementById(hash.slice(1))) return;
+
+      event.preventDefault();
+      window.history.pushState(null, "", hash);
+      scrollToHash(hash);
+    };
+
+    const handleHashChange = () => scrollToHash(window.location.hash);
+
+    document.addEventListener("click", handleAnchorClick);
+    window.addEventListener("hashchange", handleHashChange);
+
+    if (window.location.hash) {
+      window.setTimeout(() => scrollToHash(window.location.hash, "auto"), 0);
+    }
+
+    return () => {
+      document.removeEventListener("click", handleAnchorClick);
+      window.removeEventListener("hashchange", handleHashChange);
+    };
+  }, []);
+
   const scrollToForm = () => {
     document.getElementById("hero-enquiry")?.scrollIntoView({ behavior: "smooth", block: "center" });
   };
