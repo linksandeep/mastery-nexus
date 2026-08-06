@@ -33,6 +33,8 @@ npm run build
 npm start
 ```
 
+Set `NEXT_PUBLIC_SITE_URL` to your live domain in your hosting environment so social preview URLs resolve correctly.
+
 ## Main files
 
 - `components/LandingPage.tsx`: page structure, form behaviour, carousel and scroll state
