@@ -138,6 +138,38 @@ function DocumentIcon({ className }: IconProps) {
   );
 }
 
+function CourseIcon({ type }: { type: "analytics" | "code" | "layers" | "sparkles" }) {
+  if (type === "analytics") {
+    return (
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M6 18v-5M12 18V6M18 18V9" fill="none" stroke="currentColor" strokeLinecap="round" strokeWidth="2" />
+      </svg>
+    );
+  }
+
+  if (type === "code") {
+    return (
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="m9 6-6 6 6 6M15 6l6 6-6 6" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" />
+      </svg>
+    );
+  }
+
+  if (type === "layers") {
+    return (
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="m12 4 9 5-9 5-9-5 9-5Zm-9 9 9 5 9-5M3 17l9 5 9-5" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.8" />
+      </svg>
+    );
+  }
+
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="m12 2 1.5 4.5L18 8l-4.5 1.5L12 14l-1.5-4.5L6 8l4.5-1.5L12 2ZM19 14l.8 2.2L22 17l-2.2.8L19 20l-.8-2.2L16 17l2.2-.8L19 14ZM5 13l1 3 3 1-3 1-1 3-1-3-3-1 3-1 1-3Z" fill="currentColor" />
+    </svg>
+  );
+}
+
 function BrandLogo({ inverted = false }: { inverted?: boolean }) {
   return (
     <a className={`brandLogo ${inverted ? "brandLogo--inverted" : ""}`} href="#top" aria-label="Mastery Nexus home">
@@ -191,13 +223,47 @@ function usePageScroll() {
 }
 
 function Header({ isScrolled, onEnquire }: { isScrolled: boolean; onEnquire: () => void }) {
+  const [coursesOpen, setCoursesOpen] = useState(false);
+  const coursesRef = useRef<HTMLDivElement>(null);
+  const coursesCloseTimer = useRef<number | null>(null);
   const navItems = [
-    { label: "Courses", href: "#top" },
     { label: "Career Support", href: "#why-us" },
     { label: "Student Stories", href: "#student-stories" },
     { label: "Reviews", href: "#trustpilot" },
     { label: "Contact", href: "#lower-enquiry" },
   ];
+
+  const courses = [
+    { label: "Data Analytics and Gen AI Certification Program", duration: "6 Months", badge: "In demand", icon: "analytics" as const },
+    { label: "Data Science & Machine Learning Certification Program", duration: "12 Months", badge: "Advanced", icon: "code" as const },
+    { label: "Agentic AI Certification Program", duration: "4 Months", badge: "Featured", icon: "layers" as const },
+    { label: "Generative AI Certification Program", duration: "3 Months", badge: "Foundation", icon: "sparkles" as const },
+  ];
+
+  const openCourses = () => {
+    if (coursesCloseTimer.current) window.clearTimeout(coursesCloseTimer.current);
+    setCoursesOpen(true);
+  };
+
+  const closeCoursesSoon = () => {
+    if (coursesCloseTimer.current) window.clearTimeout(coursesCloseTimer.current);
+    coursesCloseTimer.current = window.setTimeout(() => setCoursesOpen(false), 220);
+  };
+
+  useEffect(() => () => {
+    if (coursesCloseTimer.current) window.clearTimeout(coursesCloseTimer.current);
+  }, []);
+
+  useEffect(() => {
+    if (!coursesOpen) return;
+
+    const closeOnOutsideClick = (event: MouseEvent) => {
+      if (!coursesRef.current?.contains(event.target as Node)) setCoursesOpen(false);
+    };
+
+    document.addEventListener("mousedown", closeOnOutsideClick);
+    return () => document.removeEventListener("mousedown", closeOnOutsideClick);
+  }, [coursesOpen]);
 
   return (
     <header className={`siteHeader ${isScrolled ? "siteHeader--scrolled" : ""}`}>
@@ -205,6 +271,54 @@ function Header({ isScrolled, onEnquire }: { isScrolled: boolean; onEnquire: () 
 
       <div className="siteHeader__navRow">
         <nav className="primaryNav" aria-label="Primary navigation">
+          <div
+            className={`coursesNavItem ${coursesOpen ? "is-open" : ""}`}
+            ref={coursesRef}
+            onMouseEnter={openCourses}
+            onMouseLeave={closeCoursesSoon}
+            onBlur={(event) => {
+              if (!event.currentTarget.contains(event.relatedTarget as Node | null)) setCoursesOpen(false);
+            }}
+            onKeyDown={(event) => {
+              if (event.key === "Escape") {
+                setCoursesOpen(false);
+                (coursesRef.current?.querySelector("button") as HTMLButtonElement | null)?.focus();
+              }
+            }}
+          >
+            <button
+              className="coursesNavTrigger"
+              type="button"
+              aria-haspopup="true"
+              aria-expanded={coursesOpen}
+              aria-controls="courses-menu"
+              onClick={() => setCoursesOpen((open) => !open)}
+              onFocus={openCourses}
+            >
+              <span>Courses</span>
+              <i aria-hidden="true" />
+            </button>
+
+            <div className="coursesDropdown" id="courses-menu" aria-label="Popular programs">
+              <div className="coursesDropdown__heading">
+                <strong>Popular programs</strong>
+                <a href="#lower-enquiry" onClick={() => setCoursesOpen(false)}>View all <ArrowIcon /></a>
+              </div>
+              <div className="coursesDropdown__grid">
+                {courses.map((course) => (
+                  <a className="courseMenuCard" href="#lower-enquiry" key={course.label} onClick={() => setCoursesOpen(false)}>
+                    <span className="courseMenuCard__icon"><CourseIcon type={course.icon} /></span>
+                    <span className="courseMenuCard__body">
+                      <small>{course.badge}</small>
+                      <strong>{course.label}</strong>
+                      <span className="courseMenuCard__duration"><span aria-hidden="true">◷</span>{course.duration}</span>
+                    </span>
+                    <ArrowIcon className="courseMenuCard__arrow" />
+                  </a>
+                ))}
+              </div>
+            </div>
+          </div>
           {navItems.map((item) => (
             <a href={item.href} key={item.label}>
               <span>{item.label}</span>
