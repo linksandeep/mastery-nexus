@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
+export const runtime = "nodejs";
+
 type EnquiryPayload = {
   fullName?: unknown;
   email?: unknown;
@@ -18,6 +20,25 @@ type EnquiryPayload = {
 
 const text = (value: unknown, max = 500) => typeof value === "string" ? value.trim().slice(0, max) : "";
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+async function storeLeadFallback(lead: object) {
+  const serializedLead = `${JSON.stringify(lead)}\n`;
+
+  try {
+    const [{ mkdir, appendFile }, { join }] = await Promise.all([
+      import("node:fs/promises"),
+      import("node:path"),
+    ]);
+    const storageDir = process.env.ENQUIRY_STORAGE_DIR || join(process.cwd(), "data");
+    await mkdir(storageDir, { recursive: true, mode: 0o700 });
+    await appendFile(join(storageDir, "enquiries.ndjson"), serializedLead, { mode: 0o600 });
+    return "local-file";
+  } catch (error) {
+    console.error("Local enquiry storage failed; writing lead to server log.", error);
+    console.info(`MASTERY_NEXUS_ENQUIRY ${serializedLead.trim()}`);
+    return "server-log";
+  }
+}
 
 export async function POST(request: NextRequest) {
   let body: EnquiryPayload;
@@ -53,10 +74,8 @@ export async function POST(request: NextRequest) {
 
   const webhookUrl = process.env.ENQUIRY_WEBHOOK_URL;
   if (!webhookUrl) {
-    return NextResponse.json(
-      { error: "Online enquiries are being configured. Your details were not submitted—please try again later." },
-      { status: 503 },
-    );
+    const delivery = await storeLeadFallback(lead);
+    return NextResponse.json({ ok: true, delivery }, { status: 201 });
   }
 
   try {
@@ -72,11 +91,9 @@ export async function POST(request: NextRequest) {
 
     if (!webhookResponse.ok) throw new Error(`Lead endpoint returned ${webhookResponse.status}`);
     return NextResponse.json({ ok: true }, { status: 201 });
-  } catch {
-    return NextResponse.json(
-      { error: "We could not send your enquiry. Your details were not stored. Please try again shortly." },
-      { status: 502 },
-    );
+  } catch (error) {
+    console.error("Enquiry webhook delivery failed; storing lead locally.", error);
+    const delivery = await storeLeadFallback(lead);
+    return NextResponse.json({ ok: true, delivery }, { status: 201 });
   }
 }
-
